@@ -34,11 +34,24 @@ export class AuthenticationPageComponent {
   ngOnInit() {}
 
   login() {
-    let isValid = this.usersService.login(this.form.value);
-    if (!isValid) {
+    console.log(this.form.value);
+    let response;
+    let user = this.usersService.login(this.form.value).subscribe(res =>{
+      console.log(res);
+      this.router.navigate(["/customArea"])
+    },
+    error=>{
       this.form.setErrors({
         invalidLogin: true,
       });
     }
+
+      )
+console.log(response);
+
+
+    /* if (response ) {
+
+    } */
   }
 }

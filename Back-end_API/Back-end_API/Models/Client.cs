@@ -11,8 +11,8 @@ namespace Back_end_API.Models
         public string LastName { get; set; }
         public string FirstName { get; set; }
         public string Adress { get; set; }
-        public int Phone { get; set; }
-        public int AssuranceNumber { get; set; }
+        public  string Phone { get; set; }
+        public string AssuranceNumber { get; set; }
         public string Password { get; set; }
         
 

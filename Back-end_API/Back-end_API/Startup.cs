@@ -26,6 +26,7 @@ namespace Back_end_API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors();
             services.AddDbContext<Context>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("AssuerPlus"));
@@ -40,7 +41,15 @@ namespace Back_end_API
             {
                 app.UseDeveloperExceptionPage();
             }
-
+            app.UseCors(builder =>
+            {
+                builder
+                //.WithOrigins("https://localhost:4200")
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                 .SetIsOriginAllowed(origin => true)
+                 .AllowCredentials();
+            });
             app.UseRouting();
 
             app.UseAuthorization();
