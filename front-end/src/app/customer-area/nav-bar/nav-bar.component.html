@@ -1,0 +1,16 @@
+<mat-toolbar color="primary">
+  <!-- <button mat-icon-button (click)="isMenuOpen = !isMenuOpen">
+    <mat-icon>menu</mat-icon>
+  </button> -->
+  <button mat-icon-button [matMenuTriggerFor]="menu">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <span>Assuer</span>
+  <span class="spacer"></span>
+
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item>Profil</button>
+    <button mat-menu-item>Signaler un accident</button>
+    <button mat-menu-item>Déconnexion</button>
+  </mat-menu>
+</mat-toolbar>
