@@ -13,6 +13,7 @@ import { CustomAreaComponent } from './customer-area/custom-area/custom-area.com
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from "@angular/forms";
 import { HttpClientModule } from "@angular/common/http";
+import { DeclareAccidentComponent } from './customer-area/declare-accident/declare-accident.component';
 
 
 @NgModule({
@@ -21,6 +22,7 @@ import { HttpClientModule } from "@angular/common/http";
     AuthenticationPageComponent,
     NavBarComponent,
     CustomAreaComponent,
+    DeclareAccidentComponent,
 
   ],
   imports: [
