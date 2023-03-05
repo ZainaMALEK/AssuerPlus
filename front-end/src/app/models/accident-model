@@ -1,0 +1,6 @@
+export class AccidentModel {
+    vehicleImages: File[];
+    description: string;
+    constat: File;
+
+}
