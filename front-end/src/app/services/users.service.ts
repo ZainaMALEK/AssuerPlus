@@ -25,6 +25,8 @@ export class UsersService {
 
    getUserInfo() {
     const token = this.getToken();
+    console.log(token);
+
     let payload;
     if (token) {
       payload = token.split(".")[1];
@@ -38,6 +40,6 @@ export class UsersService {
   }
 
    getToken() {
-    return localStorage.getItem("jwt-token");
+    return localStorage.getItem("jwt");
   }
 }

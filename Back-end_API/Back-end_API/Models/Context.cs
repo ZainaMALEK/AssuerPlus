@@ -12,5 +12,7 @@ namespace Back_end_API.Models
         {
         }
         public DbSet<Client> Clients { get; set; }
+        public DbSet<Image> Images { get; set; }
+        public DbSet<Sinistre> Sinistres { get; set; }
     }
 }

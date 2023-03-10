@@ -11,6 +11,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using System.Text.Json;
 
 namespace Back_end_API.Controllers
 {
@@ -49,9 +50,11 @@ namespace Back_end_API.Controllers
                     claims: new List<Claim>(),
                     expires: DateTime.Now.AddMinutes(5),
                     signingCredentials: signinCredentials
+
                 );
                 var tokenString = new JwtSecurityTokenHandler().WriteToken(tokeOptions);
-                return Ok(new { Token = tokenString });
+                var userjson = JsonSerializer.Serialize(userfound);
+                return Ok(new { Token = tokenString, User = userjson });
             }
       
             else if (user is null)
@@ -63,30 +66,44 @@ namespace Back_end_API.Controllers
         }
 
         [HttpPost("api/declareAccident")]
-        public async Task<IActionResult> declareAccident([FromForm] Accident accident) {
+        public async Task<IActionResult> declareAccident([FromForm] SinistreModel sinistreModel) {
             
             try
             {
-                var files = accident.images;
+                int id = sinistreModel.clientID;
+                Sinistre sinistre = new Sinistre();
+                Client client = _db.Clients.FirstOrDefault(c => c.ClientID == id);
+                
+                var files = sinistreModel.images;
                 var folderName = Path.Combine("Resources", "Images");
                 var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
                 if (files.Any(f => f.Length == 0))
                 {
                     return BadRequest();
                 }
-
+                var images = new List<Image>();
                 foreach (var file in files)
                 {
                     var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
                     var fullPath = Path.Combine(pathToSave, fileName);
                     var dbPath = Path.Combine(folderName, fileName);
 
+                    Image image = new Image();
+                    image.Path = fullPath;
+                    images.Add(image);
+                    _db.Images.Add(image);
                     using (var stream = new FileStream(fullPath, FileMode.Create))
                     {
                         file.CopyTo(stream);
                     }
                    
                 }
+                sinistre.Client = client;
+                sinistre.Description = sinistreModel.description;
+                sinistre.Images = images;
+                _db.Sinistres.Add(sinistre);
+               
+                _db.SaveChanges();
                 return Ok("All the files are successfully uploaded.");
             }
             catch (Exception ex)

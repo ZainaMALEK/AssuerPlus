@@ -13,11 +13,18 @@ export class DeclareAccidentComponent {
   //images!:File;
   description:string ="";
   url:string ="http://localhost:11940/api/declareAccident";
+  user:any;
+  userjson:any ="";
   form = new FormGroup({
     //images: new FormControl(null),
-    description: new FormControl('dd'),
+    description: new FormControl(''),
   });
   constructor(private httpClient: HttpClient, private usersService :UsersService) {
+
+this.userjson = (localStorage.getItem("user"));
+this.user = JSON.parse(this.userjson);
+
+
 
   }
   sendData() {
@@ -34,7 +41,7 @@ export class DeclareAccidentComponent {
     });
 
 
-
+    formData.append('clientID', this.user.ClientID)
     this.httpClient.post(this.url, formData).subscribe((response) => {
                 console.log(response);
             });

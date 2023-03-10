@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 
  export interface AuthenticatedResponse{
     token: string;
+    user:any;
   }
 @Component({
   selector: 'app-authentication-page',
@@ -45,7 +46,9 @@ export class AuthenticationPageComponent {
     let user = this.usersService.login(this.form.value).subscribe({
       next: (response: AuthenticatedResponse) => {
         const token = response.token;
+        const userlog = response.user;
         localStorage.setItem("jwt", token);
+        localStorage.setItem("user", userlog)
 
         this.router.navigate(["/customArea"]);
       },
