@@ -1,3 +1,4 @@
+import { UsersService } from '../../services/users.service';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -8,31 +9,42 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
   styleUrls: ['./declare-accident.component.scss']
 })
 export class DeclareAccidentComponent {
-  //images!: File[];
-  images!:File;
+  images!: File[];
+  //images!:File;
   description:string ="";
   url:string ="http://localhost:11940/api/declareAccident";
   form = new FormGroup({
     //images: new FormControl(null),
     description: new FormControl('dd'),
   });
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient, private usersService :UsersService) {
+
+  }
   sendData() {
     console.log(this.form.value);
-    console.log(this.form.value.description)
+
     const formData = new FormData();
     this.description = <string>this.form.value.description;
     formData.append('description', this.description)
-    formData.append('images', this.images)
+
+
+    Array.from(this.images).forEach(file => {
+      formData.append("images", file);
+
+    });
+
+
+
     this.httpClient.post(this.url, formData).subscribe((response) => {
                 console.log(response);
             });
   }
 
   onFileSelected(event:any) {
+console.log(this.usersService.getUserInfo());
 
     //const files:File [] = event.target.files;
-    const files:File = event.target.files[0];
+    const files:File[] = event.target.files;
     this.images = files;
 
     if (files) {

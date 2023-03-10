@@ -15,8 +15,11 @@ import { ReactiveFormsModule } from "@angular/forms";
 import { HttpClientModule } from "@angular/common/http";
 import { DeclareAccidentComponent } from './customer-area/declare-accident/declare-accident.component';
 import { FormsModule }   from '@angular/forms';
+import { JwtModule } from '@auth0/angular-jwt';
 
-
+export function tokenGetter() {
+  return localStorage.getItem("jwt");
+}
 @NgModule({
   declarations: [
     AppComponent,
@@ -36,7 +39,14 @@ import { FormsModule }   from '@angular/forms';
     MatMenuModule,
     BrowserAnimationsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: tokenGetter,
+        //allowedDomains: ["localhost:5001"],
+        disallowedRoutes: []
+      }
+    })
 
   ],
   providers: [],

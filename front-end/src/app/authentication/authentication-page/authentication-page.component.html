@@ -37,7 +37,7 @@
     type = "string"
     class = "form-control">
     <div *ngIf="assuranceNumber!.touched && assuranceNumber!.invalid"
-      class="alert alert-danger mt-1"> Le nyméro d'assuré est obligatoire</div>
+      class="alert alert-danger mt-1"> Le numéro d'assuré est obligatoire</div>
   </div>
   <div class="form-group">
     <label for="password">Mot de passe</label>
@@ -49,7 +49,7 @@
     <div *ngIf="password!.touched && password!.invalid"
       class="alert alert-danger mt-1"> Le mot de passe est obligatoire</div>
   </div>
-  <div *ngIf="form.errors" class="alert alert-danger "> Le numéro d'assuré ou le mot de passe est incorrect</div>
+  <div *ngIf="errLogin" class="alert alert-danger "> Le numéro d'assuré ou le mot de passe est incorrect</div>
   <button class="btn btn-primary mt-1" type="submit">Connexion</button>
 </form>
  </div>

@@ -8,12 +8,18 @@ import {
 import { UsersService } from '../../services/users.service';
 import { Router } from '@angular/router';
 
+ export interface AuthenticatedResponse{
+    token: string;
+  }
 @Component({
   selector: 'app-authentication-page',
   templateUrl: './authentication-page.component.html',
   styleUrls: ['./authentication-page.component.scss'],
 })
+
 export class AuthenticationPageComponent {
+
+  errLogin:boolean = false;
   form = new FormGroup({
     assuranceNumber: new FormControl('', Validators.required),
     password: new FormControl('', Validators.required),
@@ -36,7 +42,21 @@ export class AuthenticationPageComponent {
   login() {
     console.log(this.form.value);
     let response;
-    let user = this.usersService.login(this.form.value).subscribe(res =>{
+    let user = this.usersService.login(this.form.value).subscribe({
+      next: (response: AuthenticatedResponse) => {
+        const token = response.token;
+        localStorage.setItem("jwt", token);
+
+        this.router.navigate(["/customArea"]);
+      },
+      error: () => {
+        this.errLogin = true;
+      }
+
+    })
+  }
+}
+     /*  res =>{
       console.log(res);
       this.router.navigate(["/customArea"])
     },
@@ -48,10 +68,6 @@ export class AuthenticationPageComponent {
 
       )
 console.log(response);
+ */
 
 
-    /* if (response ) {
-
-    } */
-  }
-}

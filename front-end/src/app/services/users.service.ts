@@ -4,6 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 @Injectable({
   providedIn: 'root',
 })
+
 export class UsersService {
   httpOptions = {
     headers: new HttpHeaders({
@@ -17,5 +18,26 @@ export class UsersService {
   login(form: any) {
     return this.httpClient.post<any>(this.baseUrl + "login", form, this.httpOptions);
 
+  }
+  logout(){
+    localStorage.removeItem('jwt');
+  }
+
+   getUserInfo() {
+    const token = this.getToken();
+    let payload;
+    if (token) {
+      payload = token.split(".")[1];
+      payload = window.atob(payload);
+      console.log(payload);
+
+      return JSON.parse(payload);
+    } else {
+      return null;
+    }
+  }
+
+   getToken() {
+    return localStorage.getItem("jwt-token");
   }
 }
