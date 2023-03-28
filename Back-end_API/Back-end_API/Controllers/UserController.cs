@@ -22,7 +22,11 @@ namespace Back_end_API.Controllers
             _db = db;
 
         }
-
+        [HttpGet("api/test")]
+        public string getTest()
+        {
+            return "api ok";
+        }
         public IActionResult Index()
         {
             return View();
