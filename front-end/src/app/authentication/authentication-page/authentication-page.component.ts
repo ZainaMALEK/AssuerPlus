@@ -50,7 +50,7 @@ export class AuthenticationPageComponent {
         localStorage.setItem("jwt", token);
         localStorage.setItem("user", userlog)
 
-        this.router.navigate(["/customArea"]);
+        this.router.navigate(["/customArea/home"]);
       },
       error: () => {
         this.errLogin = true;
@@ -59,18 +59,5 @@ export class AuthenticationPageComponent {
     })
   }
 }
-     /*  res =>{
-      console.log(res);
-      this.router.navigate(["/customArea"])
-    },
-    error=>{
-      this.form.setErrors({
-        invalidLogin: true,
-      });
-    }
-
-      )
-console.log(response);
- */
 
 

@@ -108,7 +108,7 @@ namespace Back_end_API.Controllers
                 _db.Sinistres.Add(sinistre);
                
                 _db.SaveChanges();
-                return Ok("All the files are successfully uploaded.");
+                return Ok("success");
             }
             catch (Exception ex)
             {

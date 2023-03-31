@@ -16,6 +16,7 @@ import { HttpClientModule } from "@angular/common/http";
 import { DeclareAccidentComponent } from './customer-area/declare-accident/declare-accident.component';
 import { FormsModule }   from '@angular/forms';
 import { JwtModule } from '@auth0/angular-jwt';
+import { HomeComponent } from './customer-area/home/home.component';
 
 export function tokenGetter() {
   return localStorage.getItem("jwt");
@@ -27,6 +28,7 @@ export function tokenGetter() {
     NavBarComponent,
     CustomAreaComponent,
     DeclareAccidentComponent,
+    HomeComponent,
 
   ],
   imports: [

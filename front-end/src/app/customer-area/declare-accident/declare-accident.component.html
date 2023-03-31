@@ -1,30 +1,29 @@
-<div class="form-container">
-  <h1 class="text-center mb-3">Formulaire de déclaration de sinistre auto</h1>
+<div *ngIf="!validated" class="form-container text-center">
+  <h1 class="text-center mb-3 mt-3">Formulaire de déclaration de sinistre auto</h1>
   <form [formGroup]="form" (ngSubmit)="sendData()">
+
     <div class="form-group">
-      <label for="description">Veuillez nous en dire plus sur les circonstances de l'accident</label>
+      <label for="description">Veuillez nous en dire plus sur les circonstances de l'accident </label>
       <textarea formControlName="description" class="form-control" id="description" rows="4"></textarea>
+      <div *ngIf="form.get('description')?.touched && form.get('description')?.invalid"
+      class="alert alert-danger mt-1"> La description est obligatoire</div>
     </div>
 
-    <!-- <div class="form-group">
-      <label for="file">Veuillez joindre des photos du véhicule</label><br>
-      <input ngModel name="pictures" type="file" class="form-control-file" id="file" accept="image/*"
-        multiple="multiple">
+  <!--   <div class="form-group mt-1 mb-2">
+      <label for="file">Veuillez joindre des photos du véhicule et du constat :</label><br>
+      <input type="file" class="" multiple="multiple" (change)="onFileSelected($event)" #fileUpload>
     </div> -->
 
-    <div class="form-group">
-      <input type="file" class="" multiple="multiple" (change)="onFileSelected($event)" #fileUpload>
-
-      <div class="file-upload">
-
-      <!--   {{fileName || "No file uploaded yet."}} -->
-
-       <!--  <button mat-mini-fab color="primary" class="upload-btn" (click)="fileUpload.click()">
-          <mat-icon>attach_file</mat-icon>
-        </button> -->
-      </div>
+    <div class="form-group mt-1 mb-2">
+      <label for="file">Veuillez joindre des photos du véhicule et du constat :</label><br>
+      <input type="file" class="" multiple="multiple" (change)="onFileSelected($event)" #fileUpload formControlName="images">
+      <div *ngIf="form.get('images')!.touched && form.get('images')!.errors?.['noImages']" class="alert alert-danger mt-1"> Au moins une image est obligatoire</div>
     </div>
-    <button type="submit" class="btn btn-primary mt-1">Valider</button>
-    <p>{{form.value | json}}</p>
+
+    <button type="submit" class="btn btn-primary mt-1" [disabled]="!form.valid">Valider</button>
+
+    <!-- <p>{{form.value | json}}</p> -->
   </form>
+
 </div>
+<p class="success" *ngIf="validated">Sinistre enregistré, nos équipes vous contacterons dans les meilleurs délais</p>
