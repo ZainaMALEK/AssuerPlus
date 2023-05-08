@@ -32,8 +32,8 @@ export class DeclareAccidentComponent {
   images!: File[];
 
   description: string = '';
-  url: string = 'http://localhost:11940/api/declareAccident';
-  //url: string = ' http://vps-506fba80.vps.ovh.net:8081/api/declareAccident';
+  //url: string = 'http://localhost:11940/api/declareAccident';
+  url: string = ' http://vps-506fba80.vps.ovh.net:8081/api/declareAccident';
   validated = false;
   user: any;
   userjson: any = '';

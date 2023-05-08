@@ -20,32 +20,15 @@ interface ImageDTO {
   providedIn: 'root',
 })
 
-/* class SinistreDTO {
-  constructor(
-    public description: string = '',
-    public images: ImageDTO[] = []
-  ) {}
-}
-
-class ImageDTO {
-  constructor(
-    public base64: string = '',
-    public contentType: string = ''
-  ) {}
-}
- */
-
 export class UsersService {
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json; charset=utf-8',
     }),
   };
-  //private baseUrl = 'http://vps-506fba80.vps.ovh.net:8081/api/';
+  private baseUrl = 'http://vps-506fba80.vps.ovh.net:8081/api/';
 
-  //private baseUrl = 'http://localhost:8081/api/';
-
-  private baseUrl = 'http://localhost:11940/api/';
+  //private baseUrl = 'http://localhost:11940/api/';
   constructor(private httpClient: HttpClient) {}
 
   login(form: any) {
