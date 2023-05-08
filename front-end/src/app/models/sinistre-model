@@ -1,0 +1,14 @@
+export class SinistreDTO {
+  constructor(
+
+    public description: string,
+    public images: ImageDTO[]
+  ) {}
+}
+
+export class ImageDTO {
+  constructor(
+    public base64: string,
+    public contentType: string
+  ) {}
+}

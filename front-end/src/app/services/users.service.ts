@@ -1,9 +1,39 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+
+interface SinistreDTO {
+
+  description: string,
+  images: ImageDTO[]
+
+}
+
+interface ImageDTO {
+
+  base64: string,
+  contentType: string
+
+}
+
 
 @Injectable({
   providedIn: 'root',
 })
+
+/* class SinistreDTO {
+  constructor(
+    public description: string = '',
+    public images: ImageDTO[] = []
+  ) {}
+}
+
+class ImageDTO {
+  constructor(
+    public base64: string = '',
+    public contentType: string = ''
+  ) {}
+}
+ */
 
 export class UsersService {
   httpOptions = {
@@ -11,11 +41,11 @@ export class UsersService {
       'Content-Type': 'application/json; charset=utf-8',
     }),
   };
-  private baseUrl = 'http://vps-506fba80.vps.ovh.net:8081/api/';
+  //private baseUrl = 'http://vps-506fba80.vps.ovh.net:8081/api/';
 
   //private baseUrl = 'http://localhost:8081/api/';
 
-  //private baseUrl = 'http://localhost:11940/api/';
+  private baseUrl = 'http://localhost:11940/api/';
   constructor(private httpClient: HttpClient) {}
 
   login(form: any) {
@@ -44,5 +74,10 @@ export class UsersService {
 
    getToken() {
     return localStorage.getItem("jwt");
+  }
+  getUserSinistres(clientId :any){
+    const params = new HttpParams().set('userId', clientId);
+
+    return this.httpClient.get<SinistreDTO[]>(this.baseUrl + 'userSinistres', { params: params });
   }
 }

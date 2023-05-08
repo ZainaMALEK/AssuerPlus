@@ -1,29 +1,48 @@
-<div *ngIf="!validated" class="form-container text-center">
-  <h1 class="text-center mb-3 mt-3">Formulaire de déclaration de sinistre auto</h1>
-  <form [formGroup]="form" (ngSubmit)="sendData()">
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-6">
+      <div *ngIf="!validated" class="form-container text-center">
+        <h4 class="text-center mb-3 mt-3 fw-bold">Formulaire de déclaration de sinistre auto</h4>
+        <form [formGroup]="form" (ngSubmit)="sendData()">
 
-    <div class="form-group">
-      <label for="description">Veuillez nous en dire plus sur les circonstances de l'accident </label>
-      <textarea formControlName="description" class="form-control" id="description" rows="4"></textarea>
-      <div *ngIf="form.get('description')?.touched && form.get('description')?.invalid"
-      class="alert alert-danger mt-1"> La description est obligatoire</div>
+          <div class="form-group">
+            <label for="description">Veuillez nous en dire plus sur les circonstances de l'accident </label>
+            <textarea formControlName="description" class="form-control" id="description" rows="4"></textarea>
+            <div *ngIf="form.get('description')?.touched && form.get('description')?.invalid"
+            class="alert alert-danger mt-1"> La description est obligatoire</div>
+          </div>
+
+          <div class="form-group mt-1 mb-2">
+            <label for="file">Veuillez joindre des photos du véhicule et du constat :</label><br>
+            <input type="file" class="" multiple="multiple" (change)="onFileSelected($event)" #fileUpload formControlName="images">
+            <div *ngIf="form.get('images')!.touched && form.get('images')!.errors?.['noImages']" class="alert alert-danger mt-1"> Au moins une image est obligatoire</div>
+          </div>
+
+          <button type="submit" class="btn btn-primary mt-1" [disabled]="!form.valid">Valider</button>
+
+          <!-- <p>{{form.value | json}}</p> -->
+        </form>
+
+      </div>
+      <p class="success" *ngIf="validated">Sinistre enregistré, nos équipes vous contacterons dans les meilleurs délais</p>
     </div>
+    <div class="col-md-6">
 
-  <!--   <div class="form-group mt-1 mb-2">
-      <label for="file">Veuillez joindre des photos du véhicule et du constat :</label><br>
-      <input type="file" class="" multiple="multiple" (change)="onFileSelected($event)" #fileUpload>
-    </div> -->
+      <h4 class="text-center mb-3 mt-3 fw-bold">Vos sinistres auto enregistrés</h4>
+      <div class="container">
 
-    <div class="form-group mt-1 mb-2">
-      <label for="file">Veuillez joindre des photos du véhicule et du constat :</label><br>
-      <input type="file" class="" multiple="multiple" (change)="onFileSelected($event)" #fileUpload formControlName="images">
-      <div *ngIf="form.get('images')!.touched && form.get('images')!.errors?.['noImages']" class="alert alert-danger mt-1"> Au moins une image est obligatoire</div>
+          <div class="item" *ngFor="let sinistre of userSinistres">
+            <div class="has-image item-container">
+              <img [src]= "'data:image/'+ sinistre.images[0].contentType+ ';base64,' + sinistre.images[0].base64"  class="card-img-top thumbnail">
+              <div class="item-description d-inline">
+                {{ sinistre.description.slice(0, 130) }}{{ sinistre.description.length > 130 ? '...' : '' }}
+              </div>
+            </div>
+          </div>
+
+      </div>
+
     </div>
-
-    <button type="submit" class="btn btn-primary mt-1" [disabled]="!form.valid">Valider</button>
-
-    <!-- <p>{{form.value | json}}</p> -->
-  </form>
-
+  </div>
 </div>
-<p class="success" *ngIf="validated">Sinistre enregistré, nos équipes vous contacterons dans les meilleurs délais</p>
+

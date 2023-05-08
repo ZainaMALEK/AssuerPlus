@@ -12,6 +12,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using System.Text.Json;
+using Microsoft.EntityFrameworkCore;
+using Back_end_API.Models.ressources;
 
 namespace Back_end_API.Controllers
 {
@@ -79,18 +81,22 @@ namespace Back_end_API.Controllers
                 Client client = _db.Clients.FirstOrDefault(c => c.ClientID == id);
                 
                 var files = sinistreModel.images;
-                var folderName = Path.Combine("Resources", "Images");
-                var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+                string  folderName = @"C:\projects\Assuer\images";
+                if (!Directory.Exists(folderName))
+                {
+                    Directory.CreateDirectory(folderName);
+                }
+                var pathToSave =  folderName;
                 if (files.Any(f => f.Length == 0))
                 {
                     return BadRequest();
                 }
                 var images = new List<Image>();
+                var imagesDto = new List<ImageDto>();
                 foreach (var file in files)
                 {
                     var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
-                    var fullPath = Path.Combine(pathToSave, fileName);
-                    var dbPath = Path.Combine(folderName, fileName);
+                    var fullPath = Path.Combine(folderName, fileName);
 
                     Image image = new Image();
                     image.Path = fullPath;
@@ -100,7 +106,15 @@ namespace Back_end_API.Controllers
                     {
                         file.CopyTo(stream);
                     }
-                   
+
+                    var imageDto = new ImageDto()
+                    {
+                        Base64 = GetImageBase64(fullPath),
+                        ContentType = Path.GetExtension(fullPath).ToLower()
+                    };
+
+                    imagesDto.Add(imageDto);
+
                 }
                 sinistre.Client = client;
                 sinistre.Description = sinistreModel.description;
@@ -108,11 +122,51 @@ namespace Back_end_API.Controllers
                 _db.Sinistres.Add(sinistre);
                
                 _db.SaveChanges();
-                return Ok("success");
+
+                var createdSinistre = new SinistreDto();
+                createdSinistre.Description = sinistre.Description;
+                createdSinistre.Images = imagesDto;
+                createdSinistre.SinistreID = sinistre.SinistreID;
+
+                return Ok(createdSinistre);
             }
             catch (Exception ex)
             {
                 return StatusCode(500, $"Internal server error: {ex}");
+            }
+        }
+
+        [HttpGet("api/userSinistres")]
+        public List<SinistreDto> getUserSinistres(int userId)
+        {
+            var sinistres = _db.Sinistres
+         .Include(s => s.Client)
+         .Include(s => s.Images)
+         .Where(s => s.Client.ClientID == userId)
+         .ToList();
+
+            var sinistresDto = sinistres.Select(s => new SinistreDto
+            {
+                SinistreID = s.SinistreID,
+                Description = s.Description,
+                Images = s.Images.Select(i => new ImageDto
+                {
+                    Base64 = GetImageBase64(i.Path),
+                    ContentType = Path.GetExtension(i.Path).ToLower()
+                }).ToList()
+            }).ToList();
+
+            return sinistresDto;
+        }
+
+        private string GetImageBase64(string path)
+        {
+            using (var stream = new FileStream(path, FileMode.Open, FileAccess.Read))
+            {
+                var buffer = new byte[stream.Length];
+                stream.Read(buffer, 0, (int)stream.Length);
+                var base64 = Convert.ToBase64String(buffer);
+                return base64;
             }
         }
     }

@@ -19,7 +19,7 @@ import { Router } from '@angular/router';
 })
 
 export class AuthenticationPageComponent {
-
+  loader:boolean = false;
   errLogin:boolean = false;
   form = new FormGroup({
     assuranceNumber: new FormControl('', Validators.required),
@@ -44,16 +44,20 @@ export class AuthenticationPageComponent {
     console.log(this.form.value);
     let response;
     let user = this.usersService.login(this.form.value).subscribe({
+
       next: (response: AuthenticatedResponse) => {
+        this.loader = true;
         const token = response.token;
         const userlog = response.user;
         localStorage.setItem("jwt", token);
         localStorage.setItem("user", userlog)
 
         this.router.navigate(["/customArea/home"]);
+        this.loader = false;
       },
       error: () => {
         this.errLogin = true;
+        this.loader = false;
       }
 
     })
