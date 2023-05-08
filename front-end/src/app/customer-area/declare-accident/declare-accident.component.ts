@@ -2,9 +2,12 @@ import { UsersService } from '../../services/users.service';
 import { Component } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { DialogSinistreDetailComponent } from '../dialog-sinistre-detail/dialog-sinistre-detail.component';
 
 class SinistreDTO {
   constructor(
+    public sinistreID: number = 0,
     public description: string = '',
     public images: ImageDTO[] = []
   ) {}
@@ -51,6 +54,7 @@ export class DeclareAccidentComponent {
     return null;
   }
   constructor(
+    public dialog: MatDialog,
     private httpClient: HttpClient,
     private usersService: UsersService
   ) {
@@ -90,16 +94,17 @@ export class DeclareAccidentComponent {
 
     formData.append('clientID', this.user.ClientID);
 
-    this.httpClient.post(this.url, formData, {responseType: 'text'}).subscribe((response) => {
-      console.log(response);
+    this.httpClient.post(this.url, formData, {responseType: 'json'}).subscribe(((response: any) => {
+      console.log(response.sinistreID);
       this.validated = true;
       let s = new SinistreDTO();
+      s.sinistreID = response.sinistreID;
       s.description = this.description;
       s.images = imagesDto;
       this.userSinistres.unshift(s);
 
 
-    });
+    }));
 
 
   }
@@ -122,11 +127,16 @@ export class DeclareAccidentComponent {
 
   getUserSinistres(){
     this.usersService.getUserSinistres(this.user.ClientID ).subscribe(res => {
-      console.log(res);
 
       this.userSinistres = res;
 
 
     });
+  }
+  openDialog(sinistre:SinistreDTO) {
+
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.data = sinistre;
+    this.dialog.open(DialogSinistreDetailComponent, dialogConfig);
   }
 }

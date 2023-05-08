@@ -17,6 +17,8 @@ import { DeclareAccidentComponent } from './customer-area/declare-accident/decla
 import { FormsModule }   from '@angular/forms';
 import { JwtModule } from '@auth0/angular-jwt';
 import { HomeComponent } from './customer-area/home/home.component';
+import {MatDialogModule} from '@angular/material/dialog';
+import { DialogSinistreDetailComponent } from './customer-area/dialog-sinistre-detail/dialog-sinistre-detail.component';
 
 export function tokenGetter() {
   return localStorage.getItem("jwt");
@@ -29,9 +31,11 @@ export function tokenGetter() {
     CustomAreaComponent,
     DeclareAccidentComponent,
     HomeComponent,
+    DialogSinistreDetailComponent,
 
   ],
   imports: [
+    MatDialogModule,
     FormsModule,
     BrowserModule,
     AppRoutingModule,
@@ -45,7 +49,6 @@ export function tokenGetter() {
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,
-        //allowedDomains: ["localhost:5001"],
         disallowedRoutes: []
       }
     })
