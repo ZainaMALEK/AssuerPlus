@@ -41,12 +41,12 @@ export class AuthenticationPageComponent {
   ngOnInit() {}
 
   login() {
-    console.log(this.form.value);
+    this.loader = true;
     let response;
     let user = this.usersService.login(this.form.value).subscribe({
 
       next: (response: AuthenticatedResponse) => {
-        this.loader = true;
+
         const token = response.token;
         const userlog = response.user;
         localStorage.setItem("jwt", token);

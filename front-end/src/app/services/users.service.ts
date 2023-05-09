@@ -41,13 +41,11 @@ export class UsersService {
 
    getUserInfo() {
     const token = this.getToken();
-    console.log(token);
 
     let payload;
     if (token) {
       payload = token.split(".")[1];
       payload = window.atob(payload);
-      console.log(payload);
 
       return JSON.parse(payload);
     } else {

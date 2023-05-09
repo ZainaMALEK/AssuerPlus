@@ -24,7 +24,10 @@
       class="alert alert-danger mt-1"> Le mot de passe est obligatoire</div>
   </div>
   <div *ngIf="errLogin" class="alert alert-danger mt-2"> La combinaison numéro d'assuré / mot de passe est incorrecte</div>
-  <img *ngIf="loader" src="assets/loader.gif" style="width: 100%;">
+  <div class="text-center">
+
+    <img *ngIf="loader" src="assets/loader.gif" style="width: 10rem;">
+  </div>
   <div class="text-center"><button class="btn btn-primary mt-1" type="submit" [disabled]="!form.valid">Connexion</button></div>
 
 </form>

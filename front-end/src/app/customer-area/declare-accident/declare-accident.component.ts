@@ -60,12 +60,10 @@ export class DeclareAccidentComponent {
   ) {
     this.userjson = localStorage.getItem('user');
     this.user = JSON.parse(this.userjson);
-    console.log(this.user.ClientID);
 
     this.getUserSinistres();
   }
   sendData() {
-    console.log(this.form.value);
 
     const formData = new FormData();
     this.description = <string>this.form.value.description;
@@ -95,7 +93,6 @@ export class DeclareAccidentComponent {
     formData.append('clientID', this.user.ClientID);
 
     this.httpClient.post(this.url, formData, {responseType: 'json'}).subscribe(((response: any) => {
-      console.log(response.sinistreID);
       this.validated = true;
       let s = new SinistreDTO();
       s.sinistreID = response.sinistreID;
@@ -110,7 +107,6 @@ export class DeclareAccidentComponent {
   }
 
   onFileSelected(event: any) {
-    console.log(this.usersService.getUserInfo());
 
     const files: File[] = event.target.files;
     this.images = files;
