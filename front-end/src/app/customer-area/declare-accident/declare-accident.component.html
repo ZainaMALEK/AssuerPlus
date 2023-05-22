@@ -33,7 +33,10 @@
 
           <div class="item" *ngFor="let sinistre of userSinistres">
             <div class="has-image item-container"  (click)="openDialog(sinistre)" >
-              <img [src]= "'data:image/'+ sinistre.images[0].contentType+ ';base64,' + sinistre.images[0].base64"  class="card-img-top thumbnail">
+              <div *ngIf="sinistre.images.length > 0">
+
+                <img  [src]= "'data:image/'+ sinistre.images[0].contentType+ ';base64,' + sinistre.images[0].base64"  class="card-img-top thumbnail">
+              </div>
               <div class="item-description d-inline">
                 {{ sinistre.description.slice(0, 130) }}{{ sinistre.description.length > 130 ? '...' : '' }}
               </div>
